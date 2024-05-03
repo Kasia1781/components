@@ -1,29 +1,23 @@
-import { useRef } from 'react';
 import './App.css';
-import Button from './components/Button';
-import Container from './components/Container';
 import Input from './components/Input';
+import Form from './components/Form';
+import Button from './components/Button';
 
 function App() {
-	const input = useRef<HTMLInputElement>(null);
+	function handleSave(data: unknown) {
+		const extractedData = data as { name: string; age: number };
+		console.log(extractedData);
+	}
 
 	return (
 		<main>
-			<Container
-				as={Button}
-				onClick={() => {
-					console.log('ok');
-				}}>
-				Click me
-			</Container>
-			<p>
-				<Button>A Button</Button>
-			</p>
-			<p>
-				<Button href='https://google.com'>A Link</Button>
-			</p>
-			<Input id='name' label='Your name' type='text' ref={input} />
-			<Input id='age' label='Your age' type='number' />
+			<Form onSave={handleSave}>
+				<Input id='name' label='Your name' type='text' name='name' />
+				<Input id='age' label='Your age' type='number' name='age' />
+				<p>
+					<Button>Save</Button>
+				</p>
+			</Form>
 		</main>
 	);
 }
