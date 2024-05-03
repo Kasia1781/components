@@ -1,10 +1,12 @@
-import { FormEvent, type ComponentPropsWithoutRef } from 'react';
+import { FormEvent, useRef, type ComponentPropsWithoutRef } from 'react';
 
 type FormProps = ComponentPropsWithoutRef<'form'> & {
 	onSave: (value: unknown) => void;
 };
 
 export default function Form({ onSave, children, ...props }: FormProps) {
+	const form = useRef<HTMLFormElement>(null);
+
 	function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
@@ -12,10 +14,11 @@ export default function Form({ onSave, children, ...props }: FormProps) {
 		const data = Object.fromEntries(formData);
 
 		onSave(data);
+		form.current?.reset();
 	}
 
 	return (
-		<form onSubmit={handleSubmit} {...props}>
+		<form onSubmit={handleSubmit} {...props} ref={form}>
 			{children}
 		</form>
 	);
